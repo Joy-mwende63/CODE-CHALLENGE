@@ -1,3 +1,9 @@
+const readline = require('readline');
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
 function calculatePAYE(grossSalary) {
     let personalRelief = 2400;
@@ -38,6 +44,7 @@ function calculateNHIF(grossSalary) {
     if (grossSalary <= 99999) return 1600;
     return 1700;
 }
+
 function calculateNSSF(grossSalary) {
     let tier1 = Math.min(grossSalary, 6000) * 0.06;
     let tier2 = Math.max(0, Math.min(grossSalary - 6000, 12000)) * 0.06;
@@ -59,7 +66,21 @@ function calculateNetSalary(basicSalary, benefits) {
     console.log(`Net Salary: Ksh ${netSalary.toFixed(2)}`);
 }
 
-let basicSalary = parseFloat(prompt("Enter basic salary (Ksh): "));
-let benefits = parseFloat(prompt("Enter benefits (Ksh): "));
+function getInput() {
+    rl.question("Enter basic salary (Ksh): ", (basicSalary) => {
+        rl.question("Enter benefits (Ksh): ", (benefits) => {
+            basicSalary = parseFloat(basicSalary);
+            benefits = parseFloat(benefifs);
+            
+            if (isNaN(basicSalary) || isNaN(benefits) || basicSalary < 0 || benefits < 0) {
+                console.error("Please enter valid non-negative numbers for salary and benefits.");
+            } else {
+                calculateNetSalary(basicSalary, benefits);
+            }
+            rl.close();
+        });
+    });
+}
 
-calculateNetSalary(basicSalary, benefits);
+getInput();
+
